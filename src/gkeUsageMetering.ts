@@ -144,25 +144,9 @@ namespace gkeUsageMetering {
    * Validates config parameters.
    */
   export function validateConfig(connector, configParams) {
-    let fullResourceUsageDataset = (configParams && configParams.resourceUsageDatasetID);
-    if (!fullResourceUsageDataset) {
-      return connector
-        .newUserError()
-        .setText('The resource usage dataset ID is not specified')
-        .throwException();
-    }
-    // fullResourceUsageDataset should be in the format of ${PROJECT_ID}.${DATASET_ID}.
-    // GCP project ID can contain letters, numbers, single quotes, hyphens, spaces or
-    // exclamation points; BigQuery dataset IDs can contain letters, numbers and underscores
-    if (!fullResourceUsageDataset.match(/^[a-z][a-z-\d]{5,29}\.[a-zA-Z_\d]{1,1024}$/)) {
-      return connector
-        .newUserError()
-        .setText('Invalid resource usage dataset ID: dataset ID must be in the format of \"${PROJECT_ID}.${DATASET_ID}\}"')
-        .throwException();
-    }
 
-    let fullBillingTable = (configParams && configParams.gcpBillingExportTableID);
-    if (!fullBillingTable) {
+    let fullCostBreakdownTable = (configParams && configParams.costBreakdownTableID);
+    if (!fullCostBreakdownTable) {
       return connector
         .newUserError()
         .setText('The GCP billing table ID is not specified')
@@ -177,9 +161,9 @@ namespace gkeUsageMetering {
     // fullBillingTable should be in the format of ${PROJECT_ID}.${DATASET_ID}.${TABLE_ID}.
     // Bigquery table IDs can contain letters, numbers and underscores.
     if
-      (!fullBillingTable.match(matchFullBillingTableID)
+      (!fullCostBreakdownTable.match(matchFullBillingTableID)
       &&
-        !fullBillingTable.match(matchDomainScopedBillingTableID)) {
+        !fullCostBreakdownTable.match(matchDomainScopedBillingTableID)) {
       return connector
         .newUserError()
         .setText('Invalid GCP billing table ID: table ID must be in the format of \"${PROJECT_ID}.${DATASET_ID}.${TABLE_ID}\"')
