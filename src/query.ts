@@ -54,7 +54,7 @@ namespace gkeUsageMetering {
       SUM(usage.amount) AS amount,
       usage.unit AS usage_unit,
       SUM(cost) AS cost,
-      SUM(cost) / SUM(usage.amount) AS rate
+      SAFE_DIVIDE(SUM(cost), SUM(usage.amount)) AS rate
     FROM
       \`${fullGCPBillingExportTableID}\`
     WHERE
@@ -272,7 +272,7 @@ namespace gkeUsageMetering {
       SUM(usage.amount) AS amount,
       usage.unit AS usage_unit,
       SUM(cost) AS cost,
-      SUM(cost) / SUM(usage.amount) AS rate
+      SAFE_DIVIDE(SUM(cost), SUM(usage.amount)) AS rate
     FROM
       \`${fullGCPBillingExportTableID}\`
     WHERE
